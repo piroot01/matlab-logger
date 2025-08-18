@@ -12,9 +12,14 @@ classdef (Abstract) Base < matlab.unittest.TestCase
                 error('Could not find project root containing "src". Run tests from project tree or adjust detection.');
             end
 
-            srcdir = fullfile(p,'src');
-            if ~contains(path, srcdir)
-                addpath(srcdir);
+            srcDir = fullfile(p, 'src');
+            if ~contains(path, srcDir)
+                addpath(srcDir);
+            end
+
+            testDir = fullfile(p, 'test');
+            if ~contains(path, testDir)
+                addpath(testDir);
             end
 
             % Reset singletons/persistent state.
