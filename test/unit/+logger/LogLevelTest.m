@@ -1,11 +1,18 @@
 classdef LogLevelTest < matlab.unittest.TestCase
     methods (TestMethodSetup)
         function addSrcToPath(~)
+            % Find the project root by walking up until we find "src" folder
+            p = fileparts(mfilename('fullpath'));
 
-            % Add src to path so package +logger is discoverable.
-            root = fileparts(fileparts(mfilename('fullpath')));
-            srcdir = fullfile(root, 'src');
+            while ~isempty(p) && ~exist(fullfile(p,'src'),'dir')
+                p = fileparts(p);
+            end
 
+            if isempty(p)
+                error('Could not find project root containing "src". Run tests from project tree or adjust detection.');
+            end
+
+            srcdir = fullfile(p,'src');
             if ~contains(path, srcdir)
                 addpath(srcdir);
             end
@@ -15,7 +22,7 @@ classdef LogLevelTest < matlab.unittest.TestCase
         end
     end
 
-    methods(Test)
+    methods (Test)
         function testFromNameAndName(tc)
             tc.verifyEqual(logger.LogLevel.fromName('debug'), logger.LogLevel.DEBUG);
             tc.verifyEqual(logger.LogLevel.fromName('INFO'), logger.LogLevel.INFO);
@@ -37,4 +44,3 @@ classdef LogLevelTest < matlab.unittest.TestCase
         end
     end
 end
-
