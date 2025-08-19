@@ -21,5 +21,13 @@ ERROR('This is an error (but not throwing)');
 logger.Logger.setEnabled(false);
 INFO('This will not be printed');
 
+% Reconfigure the logger.
+logger.Logger.configure( ...
+    'timeFormat', 'ss:SSS', ...
+    'template', 'time: %s level: %s message: %s\n' ...
+);
+
 % Turn on again.
 logger.Logger.setEnabled(true);
+
+INFO('Test message in the new format.');
